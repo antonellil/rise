@@ -1,6 +1,6 @@
 import json
 
-raw_stocks_file = open('stockdata/stocks.json','r')
+raw_stocks_file = open('stockdata/stocks05-01-2014.json','r')
 stocks = json.loads(raw_stocks_file.readline())
 count = 0
 
@@ -13,7 +13,7 @@ for symbol in stocks:
 		mean_target = float(stocks[symbol]['analysts'][4])
 
 		desired_mean_rec = 2
-		desired_return = 1.6
+		desired_return = 1.3
 		desired_min_brokers = 5
 
 		if low_target > curr_price and \
