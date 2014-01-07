@@ -90,11 +90,20 @@ class TickersSpider(CrawlSpider):
                 self.generate_stock_analyst_data(symbol, tables[0].xpath('tr'), tables[1].xpath('tr'))
 
     def generate_stock_analyst_data(self, symbol, recommendation, price_target):
-        for table in [recommendation, price_target]:
-            for row in table:
-                value = row.xpath('td[2]/text()').extract()
-                if len(value) > 0:
-                    stock_data[symbol]['analysts'].append(value[0])
+        this_mr = recommendation[0].xpath('td[2]/text()').extract()
+        last_mr = recommendation[1].xpath('td[2]/text()').extract()
+        try:
+            stock_data[symbol]['analysts'].append(this_mr[0])
+            stock_data[symbol]['analysts'].append(last_mr[0])
+            stock_data[symbol]['analysts'].append(float(this_mr[0])-float(last_mr[0]))
+            print symbol, this_mr[0], last_mr[0]
+        except:
+            stock_data[symbol]['analysts'] = ['N/A','N/A','N/A']
+
+        for row in price_target:
+            value = row.xpath('td[2]/text()').extract()
+            if len(value) > 0:
+                stock_data[symbol]['analysts'].append(value[0])
 
     def spider_closed(self):
         print "spider closed"
