@@ -82,7 +82,7 @@ def valid_past_day(raw_past_days):
 def main(stocks, raw_past_days):
 	# Get valid past days
 	past_days = valid_past_day(raw_past_days)
-	# Filter stocks parameters: stocks, mean_rec, low_return, median_return, beta, min_brokers
+	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, beta, min_brokers
 	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,20.0), (1.5, 20.0), (1.0, 100.0), 2)
 	print 'Number of chosen stocks found:',len(projected_good_stocks)
 	# Calculate performances of the stocks
