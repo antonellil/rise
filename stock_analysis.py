@@ -1,13 +1,14 @@
 import json, ystockquote, datetime
 
 # Parameters are tuples
-def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers):
+def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers, mr_change):
 	chosen_stocks = {}
 
 	min_low_return, max_low_return = low_return
 	min_median_return, max_median_return = median_return
 	min_mean_rec, max_mean_rec = mean_rec
 	min_beta, max_beta = beta
+	min_mr_change, max_mr_change = mr_change
 
 	for symbol in stocks:
 		try:
@@ -17,12 +18,15 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers
 			beta = float(stocks[symbol]['data'][1])
 			mean_rec = float(stocks[symbol]['analysts'][0])
 			num_brokers = float(stocks[symbol]['analysts'][7])
+			mrchange=float(stocks[symbol]['analysts'][2])
 			
 			if max_low_return >= low_return >= min_low_return and \
 				min_mean_rec <= mean_rec <= max_mean_rec  and \
 				num_brokers >= min_brokers and \
 				max_median_return >= median_return >= min_median_return and \
-				min_beta <= beta <= max_beta:
+				min_beta <= beta <= max_beta and \
+				min_mr_change <= mrchange <= max_mr_change:
+
 
 				chosen_stocks[symbol] = stocks[symbol]
 		except:
@@ -82,8 +86,8 @@ def valid_past_day(raw_past_days):
 def main(stocks, raw_past_days):
 	# Get valid past days
 	past_days = valid_past_day(raw_past_days)
-	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, beta, min_brokers
-	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,20.0), (1.5, 20.0), (1.0, 100.0), 2)
+	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, beta, min_brokers, mrchange
+	projected_good_stocks = filter_stocks(stocks, (1.0,1.5), (1.1,20.0), (1.5, 20.0), (0.9, 100.0), 2, (-5.0,-0.1))
 	print 'Number of chosen stocks found:',len(projected_good_stocks)
 	# Calculate performances of the stocks
 	print 'Calculating chosen performances...'
@@ -103,10 +107,10 @@ def main(stocks, raw_past_days):
 	print 'Chosen portfolio performance:', str(average_performance(good_performances))
 
 
-raw_stocks_file = open('stockdata/stocks06-01-2014.json','r')
+raw_stocks_file = open('stockdata/stocks07-01-2014.json','r')
 stocks = json.loads(raw_stocks_file.readline())
 
-main(stocks, 30)
+main(stocks, 60)
 
 
 
