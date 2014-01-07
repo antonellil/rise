@@ -1,0 +1,56 @@
+# Filter stocks parameters: mean_rec, low_return, median_return, beta, min_brokers
+# (1.0,1.5), (1.0,20.0), (1.5, 20.0), (1.0, 100.0), 2)
+
+Number of chosen stocks found: 19
+Calculating chosen performances...
+===============================
+Chosen performances...
+-------------------------------
+Processing SIGA
+Processing SURG
+Processing NVAX
+Processing ANAC
+Processing PLPM
+Processing OCLS
+Processing TEAR
+Processing WIFI
+Processing OSIS
+Processing IMMR
+Processing PSDV
+Processing TGTX
+Processing NWBO
+Processing FLL
+Processing TWER
+Processing OGXI
+Processing CLDX
+Processing PCYO
+Processing USAT
+===============================
+Chosen performances:
+-------------------------------
+SIGA 0.0537974683544
+SURG -0.113924050633
+NVAX 0.231678486998
+ANAC -0.0261282660333
+PLPM 0.333333333333
+OCLS -0.177011494253
+TEAR 0.146368715084
+WIFI 0.00461538461538
+OSIS -0.178378378378
+IMMR -0.0648312611012
+PSDV 0.430656934307
+TGTX 0.0120192307692
+NWBO -0.0217391304348
+FLL -0.0108695652174
+TWER 0.339366515837
+OGXI 0.15625
+CLDX -0.136838036336
+PCYO -0.0214395099541
+USAT 0.112299465241
+None
+===============================
+Results
+-------------------------------
+Nasdaq performance: 0.0125934149247
+NYSE performance: 0.0137051744066
+Chosen portfolio performance: 0.0562750443262

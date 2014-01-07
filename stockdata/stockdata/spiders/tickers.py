@@ -102,3 +102,5 @@ class TickersSpider(CrawlSpider):
         stocks.write(json.dumps(stock_data,sort_keys=True,separators=(',',':')))
         stocks.close()
 
+        
+

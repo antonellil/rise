@@ -1,0 +1,158 @@
+# Filter stocks parameters: mean_rec, low_return, median_return, beta, min_brokers
+# (1.0,2.0), (1.0,20.0), (1.5, 20.0), (1.0, 100.0), 2)
+
+Number of chosen stocks found: 70
+Calculating chosen performances...
+===============================
+Chosen performances...
+-------------------------------
+Processing SURG
+Processing SPRT
+Processing CIE
+Processing SUMR
+Processing OSIS
+Processing STEM
+Processing TWER
+Processing AGEN
+Processing HTHT
+Processing FLL
+Processing OCLS
+Processing UPIP
+Processing IKAN
+Processing CLVS
+Processing EXXI
+Processing CYCC
+Processing CRIS
+Processing THLD
+Processing ONCY
+Processing VNDA
+Processing KERX
+Processing EMKR
+Processing POWR
+Processing ACUR
+Processing ECYT
+Processing CTIC
+Processing GALT
+Processing DVAX
+Processing OMEX
+Processing OREX
+Processing SNSS
+Processing AVNR
+Processing GGB
+Processing BLRX
+Processing NQ
+Processing HDSN
+Processing SIGA
+Processing NVAX
+Processing IMRS
+Processing NEPT
+Processing PCYO
+Processing XWES
+Processing CYTX
+Processing BIOD
+Processing DSCO
+Processing TEAR
+Processing PSDV
+Processing DSCI
+Processing TRQ
+Processing CIDM
+Processing CUI
+Processing PLPM
+Processing CZZ
+Processing ATHX
+Processing OIIM
+Processing HMIN
+Processing WIFI
+Processing SRNE
+Processing ALXA
+Processing CLDX
+Processing NBS
+Processing BDSI
+Processing TGTX
+Processing USAT
+Processing ANAC
+Processing NWBO
+Processing IMMR
+Processing SGYP
+Processing YOD
+Processing OGXI
+===============================
+Chosen performances:
+-------------------------------
+SURG -0.113924050633
+SPRT 0.0443213296399
+CIE -0.0577596266044
+SUMR -0.140845070423
+OSIS -0.178378378378
+STEM 0.15
+TWER 0.339366515837
+AGEN 0.12015503876
+HTHT 0.129181084198
+FLL -0.0108695652174
+OCLS -0.177011494253
+UPIP 0.0724637681159
+IKAN -0.062015503876
+CLVS 0.124796232567
+EXXI -0.0596102407337
+CYCC -0.106029106029
+CRIS -0.128279883382
+THLD 0.0227743271222
+ONCY -0.0236686390533
+VNDA 0.18992248062
+KERX -0.0462745098039
+EMKR 0.0645833333333
+POWR 0.107487922705
+ACUR 0.0227218934911
+ECYT 0.00561272217025
+CTIC 0.271794871795
+GALT -0.103448275862
+DVAX 0.130177514793
+OMEX 0.112359550562
+OREX -0.0104712041885
+SNSS -0.0785854616896
+AVNR -0.232718894009
+GGB -0.030888030888
+BLRX 0.111969111969
+NQ 0.2336523126
+HDSN 0.490196078431
+SIGA 0.0537974683544
+NVAX 0.231678486998
+IMRS 0.144927536232
+NEPT 0.0763636363636
+PCYO -0.0214395099541
+XWES 0.06
+CYTX 0.015625
+BIOD 0.321100917431
+DSCO 0.0484581497797
+TEAR 0.146368715084
+PSDV 0.430656934307
+DSCI -0.0677392040644
+TRQ -0.0716417910448
+CIDM 0.037037037037
+CUI 0.0418604651163
+PLPM 0.333333333333
+CZZ -0.0936408106219
+ATHX 0.487804878049
+OIIM 0.0727272727273
+HMIN -0.0145032632342
+WIFI 0.00461538461538
+SRNE -0.0617848970252
+ALXA 0.00621118012422
+CLDX -0.136838036336
+NBS 0.253543307087
+BDSI 0.113680154143
+TGTX 0.0120192307692
+USAT 0.112299465241
+ANAC -0.0261282660333
+NWBO -0.0217391304348
+IMMR -0.0648312611012
+SGYP 0.240909090909
+YOD 0.00826446280992
+OGXI 0.15625
+None
+===============================
+Results
+-------------------------------
+Nasdaq performance: 0.0125934149247
+NYSE performance: 0.0137051744066
+Chosen portfolio performance: 0.0573143441478
