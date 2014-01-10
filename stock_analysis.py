@@ -2,13 +2,12 @@ import json, ystockquote, datetime, urllib2, argparse
 from BeautifulSoup import BeautifulSoup
 
 # Parameters are tuples
-def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers, mr_change, check_eps):
+def filter_stocks(stocks, mean_rec, low_return, median_return, min_brokers, mr_change):
 	chosen_stocks = {}
 
 	min_low_return, max_low_return = low_return
 	min_median_return, max_median_return = median_return
 	min_mean_rec, max_mean_rec = mean_rec
-	min_beta, max_beta = beta
 	min_mr_change, max_mr_change = mr_change
 
 	for symbol in stocks:
@@ -16,20 +15,16 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers
 			curr_price = float(stocks[symbol]['data'][0])
 			low_return = float(stocks[symbol]['analysts'][6]) / curr_price
 			median_return = float(stocks[symbol]['analysts'][4]) / curr_price
-			beta = float(stocks[symbol]['data'][1])
 			mean_rec = float(stocks[symbol]['analysts'][0])
 			num_brokers = float(stocks[symbol]['analysts'][7])
 			mrchange=float(stocks[symbol]['analysts'][2])
-			eps = check_eps ? float(stocks[symbol]['data'][7]) > 0.0 : True
 			
 
 			if max_low_return >= low_return >= min_low_return and \
 				min_mean_rec <= mean_rec <= max_mean_rec  and \
 				num_brokers >= min_brokers and \
 				max_median_return >= median_return >= min_median_return and \
-				min_beta <= beta <= max_beta and \
-				min_mr_change <= mrchange <= max_mr_change and \
-				eps:
+				min_mr_change <= mrchange <= max_mr_change:
 
 				chosen_stocks[symbol] = stocks[symbol]
 		except:
@@ -92,7 +87,7 @@ def print_performances(performances):
 
 def main(stocks, past_days):
 	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, beta, min_brokers, mrchange
-	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.4,20.0), (3.0, 20.0), (0.0, 100.0), 2, (-5.0,5.0), False)
+	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(2.0,100.0),5,(-5.0,5.0))
 	# Calculate performances of the stocks
 	print 'Number of chosen stocks found:',len(projected_good_stocks)
 	print 'Calculating chosen performances...'
@@ -123,7 +118,7 @@ args = argparser.parse_args()
 raw_stocks_file = open(args.stock_data,'r')
 stocks = json.loads(raw_stocks_file.readline())
 
-main(stocks, 20)
+main(stocks, 10)
 
 
 
