@@ -10,6 +10,7 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers
 	min_mean_rec, max_mean_rec = mean_rec
 	min_beta, max_beta = beta
 	min_mr_change, max_mr_change = mr_change
+	min_eps, max_eps = check_eps
 
 	for symbol in stocks:
 		try:
@@ -20,7 +21,7 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers
 			mean_rec = float(stocks[symbol]['analysts'][0])
 			num_brokers = float(stocks[symbol]['analysts'][7])
 			mrchange=float(stocks[symbol]['analysts'][2])
-			eps = check_eps ? float(stocks[symbol]['data'][7]) > 0.0 : True
+			eps = float(stocks[symbol]['data'][6])
 			
 
 			if max_low_return >= low_return >= min_low_return and \
@@ -29,7 +30,7 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, beta, min_brokers
 				max_median_return >= median_return >= min_median_return and \
 				min_beta <= beta <= max_beta and \
 				min_mr_change <= mrchange <= max_mr_change and \
-				eps:
+				min_eps <= eps <= max_eps:
 
 				chosen_stocks[symbol] = stocks[symbol]
 		except:
@@ -91,8 +92,8 @@ def print_performances(performances):
 		print symbol, p
 
 def main(stocks, past_days):
-	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, beta, min_brokers, mrchange
-	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.4,20.0), (3.0, 20.0), (0.0, 100.0), 2, (-5.0,5.0), False)
+	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, beta, min_brokers, mrchange, diluted eps
+	projected_good_stocks = filter_stocks(stocks, (1.0,5.0), (1.0,20.0), (1.0, 20.0), (0.0, 100.0), 2.0, (-5.0,5.0), (-100.00,100.00))
 	# Calculate performances of the stocks
 	print 'Number of chosen stocks found:',len(projected_good_stocks)
 	print 'Calculating chosen performances...'
