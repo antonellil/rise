@@ -48,7 +48,9 @@ class TickersSpider(CrawlSpider):
         symbol_sel = Selector(response)
         symbol = symbol_sel.xpath('//div[@id="yfi_investing_nav"]/div[@class="hd"]/h2/text()').extract()[0].replace('More On ','')
         cleaned_url = "http://finance.yahoo.com/q/ao?s=" + symbol
+        cleaned_hp_url = "http://finance.yahoo.com/q/hp?s=" + symbol
         yield Request(cleaned_url, callback=self.parse_stock_analyst_data)
+        yield Request(cleaned_hp_url, callback=self.parse_hp_stock_data)
 
     # Take a response and parse the data part of the stock data dictionary
     def parse_stock_data(self, response):
@@ -76,6 +78,23 @@ class TickersSpider(CrawlSpider):
         except:
             stock_data[symbol]['data'] = stock_data[symbol]['data'] + [0]*6
         
+    def parse_hp_stock_data(self, response):
+        sel = Selector(response)
+        symbol = sel.xpath('//div[@id="yfi_investing_nav"]/div[@class="hd"]/h2/text()').extract()[0].replace('More On ','')
+        try:
+            table = sel.xpath('//table[contains(@class, "yfnc_datamodoutline1")]')[0]
+            hp = table.xpath('tr/td/table/tr[20]/td[5]/text()').extract()[0]
+            if symbol in stock_data:
+                if 'data' in stock_data[symbol]:
+                    stock_data[symbol]['data'].insert(0,hp)
+                else:
+                    stock_data[symbol]['data'] = [hp]
+            else:
+                stock_data[symbol]['data'] = [hp]
+        except:
+            stock_data[symbol]['data'].append(0)
+            print symbol, 'No HP Data'
+    
 
     # Take a response from the analyst opinion page and parse the analysts part of the stock data dictionary
     def parse_stock_analyst_data(self,response):
@@ -96,7 +115,6 @@ class TickersSpider(CrawlSpider):
             stock_data[symbol]['analysts'].append(this_mr[0])
             stock_data[symbol]['analysts'].append(last_mr[0])
             stock_data[symbol]['analysts'].append(float(this_mr[0])-float(last_mr[0]))
-            print symbol, this_mr[0], last_mr[0]
         except:
             stock_data[symbol]['analysts'] = ['N/A','N/A','N/A']
 
@@ -107,7 +125,7 @@ class TickersSpider(CrawlSpider):
 
     def spider_closed(self):
         print "spider closed"
-        stocks = open('stocks'+time.strftime("%d-%m-%Y")+'.json', 'w')
+        stocks = open('stocks'+time.strftime("%d-%m-%Y-%H-%M-%S")+'.json', 'w')
         stocks.write(json.dumps(stock_data,sort_keys=True,separators=(',',':')))
         stocks.close()
 
