@@ -8,7 +8,7 @@ def convert_file(json_file_path):
 
 	csv_file = csv.writer(open(json_file_path.replace('json','csv'),'wb+'))
 
-	csv_file.writerow(["Stock","Price","Beta","Volume","Avg 3 Month Vol","Market Cap","P/E","EPS","MR This Week","MR Last Week","Change","Mean Target","Median Target","High Target","Low Target","Num Brokers"])
+	csv_file.writerow(["Ticker","Price","Market Cap","Trailing P/E","Forward P/E", "PEG Ratio (5 yr expected)", "Price/Book (mrq)","Diluted EPS","Total Debt/Equity (mrq)", "Levered Free Cash Flow (ttm)", "Beta", "52-week Change", " S&P500 52-week change", "50 day moving average", "Short Ratio", "MR This Week","MR Last Week","Change","Mean Target","Median Target","High Target","Low Target","Num Brokers"])
 
 	for stock in stock_dictionary:
 		try:
