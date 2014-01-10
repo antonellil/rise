@@ -33,7 +33,7 @@ class TickersSpider(CrawlSpider):
             if i > 0:
                 if '^' not in row[0] and '/' not in row[0]:
                     stock_data[row[0]] = {}
-                    start_urls.append("http://finance.yahoo.com/q?s=" + row[0])        
+                    start_urls.append("http://finance.yahoo.com/q/ks?s=" + row[0])        
 
     print count
 
@@ -48,35 +48,49 @@ class TickersSpider(CrawlSpider):
         symbol_sel = Selector(response)
         symbol = symbol_sel.xpath('//div[@id="yfi_investing_nav"]/div[@class="hd"]/h2/text()').extract()[0].replace('More On ','')
         cleaned_url = "http://finance.yahoo.com/q/ao?s=" + symbol
-        cleaned_hp_url = "http://finance.yahoo.com/q/hp?s=" + symbol
         yield Request(cleaned_url, callback=self.parse_stock_analyst_data)
-        yield Request(cleaned_hp_url, callback=self.parse_hp_stock_data)
 
     # Take a response and parse the data part of the stock data dictionary
     def parse_stock_data(self, response):
         sel = Selector(response)
-
         symbol = sel.xpath('//div[@id="yfi_investing_nav"]/div[@class="hd"]/h2/text()').extract()[0].replace('More On ','')
-
         if symbol in stock_data:
             price = sel.xpath('//span[@class="time_rtq_ticker"]/span/text()').extract()[0]
-            stock_data[symbol]['data'] = [price]
-            quote_summary1 = sel.xpath('//div[@id="yfi_quote_summary_data"]/table[@id="table1"]/tr')
-            quote_summary2 = sel.xpath('//div[@id="yfi_quote_summary_data"]/table[@id="table2"]/tr')
-            self.generate_stock_data(symbol, quote_summary1, quote_summary2)
+            tables = sel.xpath('//table[contains(@class, "yfnc_datamodoutline1")]')
+            # Get desired tables
+            if len(tables) > 0:
+                stock_data[symbol]['data'] = [price]
+                val_measures = tables[0].xpath('tr/td/table/tr')
+                income_statement = tables[4].xpath('tr/td/table/tr')
+                balance_sheet = tables[5].xpath('tr/td/table/tr')
+                cash_flow = tables[6].xpath('tr/td/table/tr')
+                price_history = tables[7].xpath('tr/td/table/tr')
+                share_stats = tables[8].xpath('tr/td/table/tr')
+                self.generate_stock_data(symbol, val_measures, income_statement, balance_sheet, cash_flow, price_history, share_stats)
 
-    def generate_stock_data(self, symbol, quote_summary1, quote_summary2):
-        # First Table - Beta
+    def generate_stock_data(self, symbol, val_measures, income_statement, balance_sheet, cash_flow, price_history, share_stats):
         try:
-            stock_data[symbol]['data'].append(quote_summary1[5].xpath('td/text()').extract()[0])
-            # Second Table - Volume, 3m Vol, Market cap, P/E, EPS
-            stock_data[symbol]['data'].append(quote_summary2[2].xpath('td/span/text()').extract()[0])
-            stock_data[symbol]['data'].append(quote_summary2[3].xpath('td/text()').extract()[0])
-            stock_data[symbol]['data'].append(quote_summary2[4].xpath('td/span/text()').extract()[0])
-            stock_data[symbol]['data'].append(quote_summary2[5].xpath('td/text()').extract()[0])
-            stock_data[symbol]['data'].append(quote_summary2[6].xpath('td/text()').extract()[0])
+            # val_measures - Market Cap, Trailing P/E, Forward P/E, PEG, P/B
+            stock_data[symbol]['data'].append(val_measures[0].xpath('td[2]/span/text()').extract()[0])
+            stock_data[symbol]['data'].append(val_measures[2].xpath('td[2]/text()').extract()[0])
+            stock_data[symbol]['data'].append(val_measures[3].xpath('td[2]/text()').extract()[0])
+            stock_data[symbol]['data'].append(val_measures[4].xpath('td[2]/text()').extract()[0])
+            stock_data[symbol]['data'].append(val_measures[6].xpath('td[2]/text()').extract()[0])
+            # income_statement - Total D/E
+            stock_data[symbol]['data'].append(income_statement[7].xpath('td[2]/text()').extract()[0])
+            # balance_sheet - Total D/E
+            stock_data[symbol]['data'].append(balance_sheet[4].xpath('td[2]/text()').extract()[0])
+            # cash_flow - Free Cash Flow
+            stock_data[symbol]['data'].append(cash_flow[2].xpath('td[2]/text()').extract()[0])
+            # price_history - Beta, 52-week minus S&P 52-week, 50-day moving
+            stock_data[symbol]['data'].append(price_history[1].xpath('td[2]/text()').extract()[0])
+            stock_data[symbol]['data'].append(price_history[2].xpath('td[2]/text()').extract()[0])
+            stock_data[symbol]['data'].append(price_history[3].xpath('td[2]/text()').extract()[0])
+            stock_data[symbol]['data'].append(price_history[6].xpath('td[2]/text()').extract()[0])
+            # share_stats - Short Ratio
+            stock_data[symbol]['data'].append(share_stats[8].xpath('td[2]/text()').extract()[0])
         except:
-            stock_data[symbol]['data'] = stock_data[symbol]['data'] + [0]*6
+            pass
         
     def parse_hp_stock_data(self, response):
         sel = Selector(response)
