@@ -18,7 +18,6 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, min_brokers, mr_c
 			mean_rec = float(stocks[symbol]['analysts'][0])
 			num_brokers = float(stocks[symbol]['analysts'][7])
 			mrchange=float(stocks[symbol]['analysts'][2])
-					
 
 			if max_low_return >= low_return >= min_low_return and \
 				min_mean_rec <= mean_rec <= max_mean_rec  and \
@@ -85,9 +84,17 @@ def print_performances(performances):
 	for symbol, p in performances:
 		print symbol, p
 
+def output_to_file(projected_good_stocks):
+	symbol_file = open('stockdata/chosen_stocks.txt','w')
+	for stock in projected_good_stocks:
+		symbol_file.write(stock+'\n')
+	symbol_file.close()
+
 def main(stocks, past_days):
 	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, min_brokers, mrchange
-	projected_good_stocks = filter_stocks(stocks, (1.0,1.5), (1.2,20.0), (1.5, 100.0), 1.0, (-5.0,-0.1))
+	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(1.5,100.0),10,(-5.0,5.0))
+	output_to_file(projected_good_stocks)
+
 	# Calculate performances of the stocks
 	print 'Number of chosen stocks found:',len(projected_good_stocks)
 	print 'Calculating chosen performances...'
