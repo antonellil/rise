@@ -24,7 +24,7 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, min_brokers, mr_c
 				num_brokers >= min_brokers and \
 				max_median_return >= median_return >= min_median_return and \
 				min_mr_change <= mrchange <= max_mr_change:
-
+		
 				chosen_stocks[symbol] = stocks[symbol]
 		except:
 			pass
@@ -94,6 +94,7 @@ def main(stocks, past_days):
 	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, min_brokers, mrchange
 	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(1.5,100.0),10,(-5.0,-0.1))
 	output_to_file(projected_good_stocks)
+
 	# Calculate performances of the stocks
 	print 'Number of chosen stocks found:',len(projected_good_stocks)
 	print 'Calculating chosen performances...'
@@ -124,7 +125,7 @@ args = argparser.parse_args()
 raw_stocks_file = open(args.stock_data,'r')
 stocks = json.loads(raw_stocks_file.readline())
 
-main(stocks, 10)
+main(stocks, 20)
 
 
 
