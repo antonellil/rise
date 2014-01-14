@@ -92,7 +92,7 @@ def output_to_file(projected_good_stocks):
 
 def main(stocks, past_days):
 	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, min_brokers, mrchange
-	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(1.5,100.0),10,(-5.0,5.0))
+	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(1.0,100.0), 10.0,(-5.0,-0.1))
 	output_to_file(projected_good_stocks)
 
 	# Calculate performances of the stocks
@@ -125,7 +125,7 @@ args = argparser.parse_args()
 raw_stocks_file = open(args.stock_data,'r')
 stocks = json.loads(raw_stocks_file.readline())
 
-main(stocks, 20)
+main(stocks, 15)
 
 
 
