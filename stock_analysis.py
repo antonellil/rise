@@ -12,9 +12,9 @@ def filter_stocks(stocks, mean_rec, low_return, median_return, min_brokers, mr_c
 
 	for symbol in stocks:
 		try:
-			curr_price = float(stocks[symbol]['data'][0])
-			low_return = float(stocks[symbol]['analysts'][6]) / curr_price
-			median_return = float(stocks[symbol]['analysts'][4]) / curr_price
+			curr_price = float(stocks[symbol]['data'][0].replace(',',''))
+			low_return = float(stocks[symbol]['analysts'][6].replace(',','')) / curr_price
+			median_return = float(stocks[symbol]['analysts'][4].replace(',','')) / curr_price
 			mean_rec = float(stocks[symbol]['analysts'][0])
 			num_brokers = float(stocks[symbol]['analysts'][7])
 			mrchange=float(stocks[symbol]['analysts'][2])
@@ -92,7 +92,7 @@ def output_to_file(projected_good_stocks):
 
 def main(stocks, past_days):
 	# Filter stocks parameters: stocks, mean_rec, lowtar/curprice, mediantar/curprice, min_brokers, mrchange
-	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(1.0,100.0), 10.0,(-5.0,-0.1))
+	projected_good_stocks = filter_stocks(stocks, (1.0,2.0), (1.0,100.0),(1.5,100.0),10,(-5.0,-0.1))
 	output_to_file(projected_good_stocks)
 
 	# Calculate performances of the stocks
